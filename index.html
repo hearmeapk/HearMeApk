@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full w-full overflow-x-hidden">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>HearMe - Layanan Pengaduan & Edukasi</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            hearme: {
+              DEFAULT: '#4D62E5',
+              dark: '#3A4CC0',
+              light: '#6E81F7',
+              bg: '#F5F7FD',
+              surface: '#F8FAFC'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    *::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
+    * {
+      -ms-overflow-style: none !important;
+      scrollbar-width: none !important;
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      touch-action: pan-x pan-y pinch-zoom;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f3f4f6;
+    }
+
+    @media (max-width: 639px) {
+      html, body {
+        width: 100vw;
+        height: 100dvh;
+        overflow: hidden;
+      }
+      body > div {
+        width: 100vw;
+        height: 100dvh;
+        border-radius: 0;
+        border: 0;
+        margin: 0;
+        max-width: none;
+      }
+    }
+
+    .safe-top { padding-top: max(env(safe-area-inset-top), 12px); }
+    .safe-bottom { padding-bottom: max(env(safe-area-inset-bottom), 12px); }
+    .bottom-bar-shadow { box-shadow: 0 -5px 20px rgba(0,0,0,.08); }
+  </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen font-sans antialiased sm:flex sm:justify-center sm:items-center">
+
+  <!-- Mobile Wrapper Frame (Responsif Penuh di HP, Frame Elegan di Desktop/Tablet) -->
+  <div class="
+    w-full
+    h-full
+    sm:w-[410px]
+    sm:h-[880px]
+    bg-hearme-bg
+    flex
+    flex-col
+    relative
+    overflow-hidden
+    sm:rounded-[38px]
+    sm:shadow-2xl
+    sm:border-[8px]
+    sm:border-slate-800
+  ">
+
+    <!-- ================= HEADER UTAMA ================= -->
+    <header class="bg-hearme text-white px-5 py-3 safe-top flex justify-between items-center z-40 shrink-0 w-full">
+      <div class="flex items-center space-x-2">
+        <!-- TEKS HEARME DENGAN TRIGGER RAHASIA 5 KALI KETUK -->
+        <span id="secretAdminTrigger" onclick="handleSecretTap()" class="text-xl font-extrabold tracking-tight cursor-pointer select-none active:opacity-80 transition duration-150">
+          HearMe
+        </span>
+      </div>
+
+      <button id="menuBtn" onclick="toggleSideMenu()" class="text-white hover:text-slate-200 text-xl focus:outline-none p-1.5 transition active:scale-95">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </header>
+
+    <!-- BACKDROP GELAP SAAT MENU DIBUKA -->
+    <div id="menuBackdrop" onclick="tutupSideMenu()" class="absolute inset-0 bg-black/50 backdrop-blur-[2px] z-45 hidden transition-opacity duration-300"></div>
+
+    <!-- ================= MENU GARIS TIGA ================= -->
+    <div id="sideMenu" class="absolute top-[58px] inset-x-0 bg-hearme text-white z-50 p-6 space-y-4 shadow-2xl hidden border-t border-white/20">
+      <div class="flex flex-col space-y-3.5 text-xs font-semibold">
+        <button onclick="bukaTentangCara('tentang')" class="text-left py-1 hover:text-slate-200 transition">
+          Tentang HearMe
+        </button>
+        <button onclick="bukaHalamanCara()" class="text-left py-1 hover:text-slate-200 transition">
+          Cara Melapor
+        </button>
+        <button onclick="bukaKritikSaran()" class="text-left py-1 hover:text-slate-200 transition">
+          Kritik dan Saran
+        </button>
+      </div>
+    </div>
+
+    <!-- ================= CONTAINER KONTEN (TERKUNCI HORIZONTAL) ================= -->
+    <main id="mainContainer" class="flex-1 overflow-y-auto overflow-x-hidden pb-24 relative bg-hearme w-full">
+
+      <!-- ================= 1. BERANDA ================= -->
+      <section id="tab-beranda" class="w-full overflow-hidden">
+
+        <!-- LATAR BIRU ATAS -->
+        <div class="bg-hearme relative px-4 pt-2 pb-14 w-full overflow-hidden">
+          <div class="absolute -right-6 -top-6 w-28 h-28 rounded-full bg-white/10 pointer-events-none"></div>
+          <div class="absolute -left-6 bottom-4 w-24 h-24 rounded-full bg-white/10 pointer-events-none"></div>
+        </div>
+
+        <!-- AREA PUTIH MELENGKUNG -->
+        <div class="bg-white rounded-t-[28px] px-4 pb-10 space-y-4 relative z-10 w-full min-h-screen">
+
+          <!-- KARTU INFORMASI MENGAMBANG -->
+          <div class="relative -mt-10 z-20 bg-white rounded-2xl p-4 shadow-lg text-center space-y-2.5 border border-slate-100 w-full">
+            <p class="text-[11px] text-slate-700 leading-relaxed font-medium">
+              Aplikasi untuk menyampaikan laporan dan pengaduan secara aman serta menjaga kerahasiaan pelapor.
+            </p>
+            <button onclick="bukaHalamanCara()" class="border border-hearme text-hearme text-[10px] font-bold px-5 py-1.5 rounded-full hover:bg-hearme hover:text-white transition active:scale-95">
+              Lihat Cara Melapor
+            </button>
+          </div>
+
+          <!-- 2 TOMBOL QUICK AKSES -->
+          <div class="grid grid-cols-2 gap-3 pt-1 w-full">
+            <button onclick="switchTab('lapor')" class="bg-hearme hover:bg-hearme-dark text-white p-3.5 rounded-2xl shadow-md flex items-center space-x-3 text-left transition active:scale-95">
+              <i class="fa-solid fa-file-circle-plus text-2xl"></i>
+              <span class="text-xs font-bold leading-tight">Buat<br>Laporan</span>
+            </button>
+            <button onclick="switchTab('cek')" class="bg-hearme hover:bg-hearme-dark text-white p-3.5 rounded-2xl shadow-md flex items-center space-x-3 text-left transition active:scale-95">
+              <i class="fa-solid fa-file-circle-check text-2xl"></i>
+              <span class="text-xs font-bold leading-tight">Cek<br>Laporan</span>
+            </button>
+          </div>
+
+          <!-- CARD BOX INFORMASI LAYANAN -->
+          <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 shadow-sm space-y-2 w-full">
+            <div class="flex items-center space-x-2 text-hearme font-bold text-xs">
+              <span>Pusat Layanan Terpadu & Kerahasiaan</span>
+            </div>
+            <p class="text-[11px] text-slate-600 leading-relaxed text-justify">
+              HearMe menjamin keamanan setiap laporan yang Anda kirimkan. Pengaduan akan langsung disimpan ke database dan diproses oleh satgas independen tanpa mempublikasikan identitas Anda. Sampaikan kronologi dengan jujur demi kenyamanan bersama.
+            </p>
+          </div>
+
+          <!-- ARTIKEL DAN EDUKASI -->
+          <div class="space-y-2 pt-1 w-full overflow-hidden">
+            <div class="flex justify-between items-center px-1">
+              <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wide">Artikel dan Edukasi</h3>
+            </div>
+
+            <div class="flex gap-3 overflow-x-auto pb-2 pt-1 w-full snap-x snap-mandatory">
+              <div class="w-[200px] shrink-0 bg-hearme-bg rounded-2xl p-3 shadow-sm border border-slate-100 flex flex-col justify-between snap-center">
+                <div class="space-y-2">
+                  <div class="h-24 rounded-xl overflow-hidden bg-slate-200">
+                    <img src="https://cms.indonesiabaik.id/storage/post/conversions/4162/post-5451-5451-1637133321-211115_PP_21-Bentuk-Kekerasan-Seksual-yang-Dilarang!_AB-webp_conversion.webp" alt="Edukasi 1" class="w-full h-full object-cover">
+                  </div>
+                  <h4 class="font-bold text-xs text-slate-900 leading-snug line-clamp-2">
+                    21 Bentuk Kekerasan Seksual yang Dilarang!
+                  </h4>
+                  <p class="text-[10px] text-slate-500 leading-relaxed text-left line-clamp-3">
+                    Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi (Kemendikbudristek) resmi mengesahkan Permendikbud Nomor 30 Tahun 2021. Aturan tersebut berisi tentang Pencegahan dan Penanganan Kekerasan Seksual (PPKS) di Lingkungan Perguruan Tinggi.
+                  </p>
+                </div>
+                <div class="pt-2 text-right">
+                  <a href="https://indonesiabaik.id/infografis/21-bentuk-kekerasan-seksual-yang-dilarang" target="_blank" rel="noopener noreferrer" class="text-xs text-hearme font-semibold hover:underline">
+                    Selengkapnya &rarr;
+                  </a>
+                </div>
+              </div>
+
+              <div class="w-[200px] shrink-0 bg-hearme-bg rounded-2xl p-3 shadow-sm border border-slate-100 flex flex-col justify-between snap-center">
+                <div class="space-y-2">
+                  <div class="h-24 rounded-xl overflow-hidden bg-slate-200">
+                    <img src="https://akcdn.detik.net.id/community/media/visual/2020/01/28/09c48623-1b79-419d-8a8e-32243276fde3_169.jpeg?w=700&q=90" alt="Edukasi 2" class="w-full h-full object-cover">
+                  </div>
+                  <h4 class="font-bold text-xs text-slate-900 leading-snug line-clamp-2">
+                    Mengapa Kekerasan Seksual Sulit Hilang dari Ruang-ruang Pendidikan di Indonesia?
+                  </h4>
+                  <p class="text-[10px] text-slate-500 leading-relaxed text-left line-clamp-3">
+                    Mengenal peran aktif satuan tugas dalam menangani korban dan mekanisme pelaporan yang melindungi privasi.
+                  </p>
+                </div>
+                <div class="pt-2 text-right">
+                  <a href="https://www.detik.com/edu/detikpedia/d-8445955/mengapa-kekerasan-seksual-sulit-hilang-dari-ruang-ruang-pendidikan-di-indonesia?" target="_blank" rel="noopener noreferrer" class="text-xs text-hearme font-semibold hover:underline">
+                    Selengkapnya &rarr;
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================= 2. HALAMAN: CARA MELAPOR ================= -->
+      <section id="page-cara-melapor" class="hidden min-h-screen bg-hearme text-white p-4 space-y-3 relative w-full overflow-hidden">
+        <div class="relative flex items-center justify-center my-2">
+          <div class="flex-grow border-t border-white/40"></div>
+          <span class="flex-shrink mx-3 text-white text-xs font-bold tracking-wide">Cara Melapor</span>
+          <div class="flex-grow border-t border-white/40"></div>
+        </div>
+
+        <div class="space-y-2 relative z-10 text-slate-800 w-full">
+          <div class="bg-white rounded-2xl p-3.5 shadow-md flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-hearme/10 text-hearme flex items-center justify-center text-lg shrink-0">
+              <i class="fa-solid fa-file-circle-plus"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-xs text-hearme">Buat Laporan</h3>
+              <p class="text-[10px] text-slate-500 leading-tight mt-0.5">Buka formulir dan sertakan foto bukti pendukung jika ada</p>
+            </div>
+          </div>
+
+          <div class="text-center text-white text-xs font-bold opacity-80 -my-1">
+            <i class="fa-solid fa-arrow-down"></i>
+          </div>
+
+          <div class="bg-white rounded-2xl p-3.5 shadow-md flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-hearme/10 text-hearme flex items-center justify-center text-lg shrink-0">
+              <i class="fa-solid fa-file-shield"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-xs text-hearme">Kirim Laporan</h3>
+              <p class="text-[10px] text-slate-500 leading-tight mt-0.5">Periksa kembali ringkasan formulir kemudian kirimkan</p>
+            </div>
+          </div>
+
+          <div class="text-center text-white text-xs font-bold opacity-80 -my-1">
+            <i class="fa-solid fa-arrow-down"></i>
+          </div>
+
+          <div class="bg-white rounded-2xl p-3.5 shadow-md flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-hearme/10 text-hearme flex items-center justify-center text-lg shrink-0">
+              <i class="fa-solid fa-folder-open"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-xs text-hearme">Email Konfirmasi</h3>
+              <p class="text-[10px] text-slate-500 leading-tight mt-0.5">Sistem mengirimkan bukti dan kode laporan ke email Anda</p>
+            </div>
+          </div>
+
+          <div class="text-center text-white text-xs font-bold opacity-80 -my-1">
+            <i class="fa-solid fa-arrow-down"></i>
+          </div>
+
+          <div class="bg-white rounded-2xl p-3.5 shadow-md flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-hearme/10 text-hearme flex items-center justify-center text-lg shrink-0">
+              <i class="fa-solid fa-file-circle-check"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-xs text-hearme">Cek Status</h3>
+              <p class="text-[10px] text-slate-500 leading-tight mt-0.5">Pantau perkembangan tindak lanjut dengan kode laporan</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <button onclick="switchTab('lapor')" class="w-full bg-white text-hearme font-bold py-2.5 rounded-xl shadow text-xs transition active:scale-95">
+            Mulai Buat Laporan Sekarang
+          </button>
+        </div>
+      </section>
+
+      <!-- ================= 3. TAB: BUAT LAPORAN ================= -->
+      <section id="tab-lapor" class="hidden p-4 space-y-4 bg-hearme-surface min-h-full w-full overflow-hidden">
+        <div class="bg-white rounded-2xl p-3 shadow-sm border border-slate-100 space-y-3 w-full">
+          <h2 class="text-sm font-bold text-center text-slate-800 pb-2 border-b border-slate-100">Formulir Laporan</h2>
+
+          <form id="laporForm" onsubmit="submitLaporan(event)" class="space-y-3 text-xs w-full">
+            <div>
+              <label class="block font-semibold mb-1 text-slate-700">Nama Pelapor </label>
+              <input type="text" id="inpNama" placeholder="Kosongkan jika ingin anonim" class="w-full border border-slate-200 rounded-lg p-2.5 text-xs outline-none focus:border-hearme">
+            </div>
+
+            <div>
+              <label class="block font-semibold mb-1 text-slate-700">Email Pelapor <span class="text-rose-500">*</span></label>
+              <input type="email" id="inpEmail" required placeholder="email@domain.com (menerima bukti)" class="w-full border border-slate-200 rounded-lg p-2.5 text-xs outline-none focus:border-hearme">
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 w-full">
+              <div>
+                <label class="block font-semibold mb-1 text-slate-700">Kategori</label>
+                <select id="inpKategori" class="w-full border border-slate-200 rounded-lg p-2.5 text-xs outline-none focus:border-hearme bg-white">
+                  <option value="Kekerasan Seksual">Kekerasan Seksual</option>
+                  <option value="Perundungan (Bullying)">Perundungan (Bullying)</option>
+                  <option value="Pelecehan Fisik/Verbal">Pelecehan Fisik/Verbal</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-semibold mb-1 text-slate-700">Tanggal</label>
+                <input type="date" id="inpTanggal" required class="w-full border border-slate-200 rounded-lg p-2 text-xs outline-none focus:border-hearme">
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-semibold mb-1 text-slate-700">Lokasi Kejadian</label>
+              <input type="text" id="inpLokasi" required placeholder="Lokasi kejadian..." class="w-full border border-slate-200 rounded-lg p-2.5 text-xs outline-none focus:border-hearme">
+            </div>
+
+            <div>
+              <label class="block font-semibold mb-1 text-slate-700">Judul / Ringkasan</label>
+              <input type="text" id="inpJudul" required placeholder="Judul singkat pengaduan..." class="w-full border border-slate-200 rounded-lg p-2.5 text-xs outline-none focus:border-hearme">
+            </div>
+
+            <div>
+              <label class="block font-semibold mb-1 text-slate-700">Kronologi Lengkap</label>
+              <textarea id="inpKronologi" required rows="3" placeholder="Jelaskan detail kronologi kejadian..." class="w-full border border-slate-200 rounded-lg p-2.5 text-xs outline-none focus:border-hearme"></textarea>
+            </div>
+
+            <!-- INPUT FOTO BUKTI OPSIONAL -->
+            <div class="bg-slate-50 p-2.5 rounded-xl border border-dashed border-slate-300">
+              <label class="block font-semibold text-slate-700 mb-1">
+                <i class="fa-solid fa-camera text-hearme mr-1"></i> Lampirkan Foto Bukti (Opsional)
+              </label>
+              <input type="file" id="inpFoto" accept="image/*" class="w-full text-[11px] text-slate-500 file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-[10px] file:font-semibold file:bg-hearme/10 file:text-hearme hover:file:bg-hearme/20 cursor-pointer">
+              <span class="text-[9px] text-slate-400 block mt-1">Maks. 5MB (Format: JPG, PNG)</span>
+            </div>
+
+            <div class="pt-1">
+              <label class="flex items-start space-x-2 cursor-pointer">
+                <input type="checkbox" required class="mt-0.5 rounded text-hearme accent-hearme">
+                <span class="text-[10px] text-slate-600 leading-tight">
+                  Saya bersedia bertanggung jawab atas laporan ini dan dibuat dengan sebenarnya.
+                </span>
+              </label>
+            </div>
+
+            <button type="submit" id="btnSubmitLapor" class="w-full bg-hearme hover:bg-hearme-dark text-white font-semibold py-2.5 rounded-xl shadow-md transition active:scale-95 text-xs">
+              Kirim Laporan
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- ================= 4. TAB: CEK LAPORAN ================= -->
+      <section id="tab-cek" class="hidden p-4 space-y-4 bg-hearme-surface min-h-full w-full overflow-hidden">
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 space-y-3 text-center w-full">
+          <h2 class="text-sm font-bold text-slate-800 pb-2 border-b">Cek Status Laporan</h2>
+
+          <div class="space-y-2.5">
+            <label class="block text-xs font-semibold text-slate-700">Masukkan Kode Laporan</label>
+            <input type="text" id="trackInput" placeholder="LAP-XXXXXX" class="w-full text-center tracking-widest font-mono uppercase border border-slate-200 rounded-lg p-2.5 text-xs outline-none focus:border-hearme">
+            <button onclick="cariLaporan()" id="btnTrack" class="w-full bg-hearme text-white font-semibold py-2.5 rounded-xl shadow transition active:scale-95 text-xs">
+              Cek Laporan
+            </button>
+          </div>
+        </div>
+
+        <div id="hasilTrackingCard" class="hidden bg-white rounded-2xl p-4 shadow-sm border border-slate-100 space-y-3.5 text-xs w-full">
+          <div class="text-center font-bold text-slate-800 pb-2 border-b">Hasil Pelacakan</div>
+
+          <div class="flex justify-between items-center">
+            <span class="text-slate-500">Kode Laporan :</span>
+            <span id="trackKode" class="font-bold font-mono text-hearme"></span>
+          </div>
+
+          <div class="flex justify-between items-center">
+            <span class="text-slate-500">Status Laporan :</span>
+            <span id="trackStatusBadge" class="bg-hearme text-white text-[10px] font-bold px-3 py-1 rounded-full"></span>
+          </div>
+
+          <div class="pt-2 border-t">
+            <div class="font-bold text-slate-800 mb-2">Timeline Tindak Lanjut</div>
+            <div class="space-y-3 relative pl-4 border-l-2 border-slate-200 ml-2">
+              <div class="relative">
+                <div class="w-2.5 h-2.5 bg-amber-400 rounded-full absolute -left-[21px] top-1"></div>
+                <div class="font-bold text-slate-800 text-[11px]">Laporan Diterima</div>
+                <div id="trackWaktuMasuk" class="text-[9px] text-slate-400"></div>
+              </div>
+              <div class="relative">
+                <div class="w-2.5 h-2.5 bg-hearme rounded-full absolute -left-[21px] top-1"></div>
+                <div class="flex justify-between items-start">
+                  <div>
+                    <div id="timelineStatusTxt" class="font-bold text-slate-800 text-[11px]"></div>
+                    <div class="text-[9px] text-slate-400">Status terkini</div>
+                  </div>
+                  <button onclick="bukaPesanAdmin()" class="text-hearme font-bold text-[10px] underline">Lihat Catatan</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button onclick="bukaModalDetail()" class="w-full border border-slate-300 hover:border-slate-400 text-slate-700 font-semibold py-2 rounded-xl text-xs mt-1">
+            Detail Laporan & Foto Bukti
+          </button>
+        </div>
+      </section>
+
+      <!-- ================= 5. TAB: EDUKASI ================= -->
+      <section id="tab-edukasi" class="hidden p-4 space-y-4 bg-hearme-surface min-h-full w-full overflow-hidden">
+        <h2 class="text-xs font-bold text-center text-slate-700 uppercase tracking-wider">Artikel dan Edukasi</h2>
+
+        <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 p-4 space-y-2 w-full">
+          <div class="h-28 rounded-xl overflow-hidden bg-slate-200">
+            <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=600&q=80" alt="Edukasi 1" class="w-full h-full object-cover">
+          </div>
+          <h3 class="font-bold text-xs text-slate-800 leading-snug">Kekerasan terhadap Perempuan dan Anak, Jenis, dan Cara Melaporkannya</h3>
+          <p class="text-[10px] text-slate-500 line-clamp-2">Berdasarkan Survei Pengalaman Hidup Perempuan Nasional (SPHPN) tahun 2021...</p>
+          <a href="https://gemilangsehat.org/pengetahuan/sobatask/kekerasan-seksual-dalam-dunia-pendidikan/" target="_blank" rel="noopener noreferrer" class="block text-right text-xs text-hearme font-semibold">Selengkapnya &rarr;</a>
+        </div>
+
+        <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 p-4 space-y-2 w-full">
+          <div class="h-28 rounded-xl overflow-hidden bg-slate-200">
+            <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80" alt="Edukasi 2" class="w-full h-full object-cover">
+          </div>
+          <h3 class="font-bold text-xs text-slate-800 leading-snug">Edukasi dan Penanganan Tindak Kekerasan Seksual di Kampus</h3>
+          <p class="text-[10px] text-slate-500 line-clamp-2">Pentingnya mekanisme pencegahan dan penanganan kasus kekerasan seksual di dunia pendidikan...</p>
+          <a href="https://uinjkt.ac.id/id/edukasi-dan-penanganan-tindak-kekerasan-seksual" target="_blank" rel="noopener noreferrer" class="block text-right text-xs text-hearme font-semibold">Selengkapnya &rarr;</a>
+        </div>
+      </section>
+
+      <!-- ================= 6. HALAMAN: TENTANG APLIKASI ================= -->
+      <section id="page-tentang-cara" class="hidden min-h-full bg-hearme text-white p-5 space-y-4 w-full overflow-hidden">
+        <h2 class="text-sm font-bold text-center border-b border-white/20 pb-2">Tentang Aplikasi</h2>
+        <p class="text-xs font-light leading-relaxed text-justify opacity-95">
+          HearMe merupakan prototipe aplikasi berbasis web untuk pengaduan dan edukasi terkait kekerasan seksual serta perundungan (bullying). Aplikasi ini dikembangkan sebagai bagian dari tugas Project-Based Learning (PJBL) untuk menghadirkan solusi digital yang bermanfaat bagi masyarakat.
+          Saat ini, HearMe masih berupa prototipe yang akan terus dikembangkan. Kritik dan saran sangat diharapkan sebagai bahan evaluasi dan penyempurnaan aplikasi ke depannya.
+        </p>
+        <button onclick="bukaKritikSaran()" class="w-full bg-white text-hearme font-bold py-2.5 rounded-full shadow text-xs mt-3">
+          Kritik dan Saran
+        </button>
+      </section>
+
+      <!-- ================= 7. HALAMAN: KRITIK DAN SARAN ================= -->
+      <section id="page-kritik" class="hidden p-4 space-y-4 bg-hearme-surface min-h-full w-full overflow-hidden">
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 space-y-3 w-full">
+          <h2 class="text-sm font-bold text-center text-slate-800 pb-2 border-b">Kritik dan Saran</h2>
+          <form onsubmit="submitKritik(event)" class="space-y-3 text-xs w-full">
+            <div>
+              <label class="block font-semibold mb-1 text-slate-700">Email Anda</label>
+              <input type="email" id="kritikEmail" required placeholder="email@anda.com" class="w-full border border-slate-200 rounded-lg p-2.5 text-xs outline-none focus:border-hearme">
+            </div>
+            <div>
+              <label class="block font-semibold mb-1 text-slate-700">Pesan Kritik & Saran</label>
+              <textarea id="kritikPesan" required rows="4" placeholder="Sampaikan saran dan masukan..." class="w-full border border-slate-200 rounded-lg p-2.5 text-xs outline-none focus:border-hearme"></textarea>
+            </div>
+            <button type="submit" id="btnKritik" class="w-full bg-hearme hover:bg-hearme-dark text-white font-semibold py-2.5 rounded-xl shadow transition text-xs">
+              Kirim Masukan
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- ================= 8. PANEL ADMIN ================= -->
+      <section id="page-admin" class="hidden p-4 space-y-3.5 bg-slate-50 min-h-full w-full overflow-hidden">
+        <div class="flex justify-between items-center bg-white p-3 rounded-2xl border shadow-sm">
+          <div>
+            <h2 class="text-xs font-bold text-slate-800">Panel Satgas / Admin</h2>
+            <span class="text-[10px] text-emerald-600 font-semibold"><i class="fa-solid fa-circle text-[7px] mr-1"></i>Terhubung ke Sheets</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button onclick="muatDataAdmin()" title="Muat Ulang Data" class="bg-slate-100 hover:bg-slate-200 text-slate-700 p-2 rounded-xl text-xs transition active:scale-90">
+              <i class="fa-solid fa-rotate-right" id="refreshIcon"></i>
+            </button>
+            <button onclick="logoutAdmin()" class="text-rose-500 font-semibold text-[11px] hover:underline">
+              Keluar
+            </button>
+          </div>
+        </div>
+
+        <div class="relative w-full">
+          <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+          <input type="text" id="adminSearchInp" oninput="filterLaporanAdmin()" placeholder="Cari nama, kode, atau judul..." class="w-full pl-8 pr-3 py-2 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-hearme">
+        </div>
+
+        <div id="adminListContainer" class="space-y-3 w-full">
+          <div class="text-center py-6 text-xs text-slate-400">Memuat data laporan...</div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ================= BOTTOM NAVIGATION BAR ================= -->
+    <nav class="absolute bottom-0 inset-x-0 bg-white border-t border-slate-200 px-3 pt-2 pb-2 safe-bottom flex justify-around items-center z-30 bottom-bar-shadow">
+      <button onclick="switchTab('beranda')" class="nav-item flex flex-col items-center transition" data-target="beranda">
+        <div class="nav-icon-wrapper w-8 h-8 rounded-full bg-[#E5E9FF] text-hearme flex items-center justify-center transition">
+          <i class="fa-solid fa-house text-sm"></i>
+        </div>
+        <span class="nav-label text-[9px] mt-0.5 font-bold text-hearme">Beranda</span>
+      </button>
+
+      <button onclick="switchTab('lapor')" class="nav-item flex flex-col items-center text-slate-400 transition" data-target="lapor">
+        <div class="nav-icon-wrapper w-8 h-8 rounded-full bg-transparent flex items-center justify-center transition">
+          <i class="fa-solid fa-file-pen text-sm"></i>
+        </div>
+        <span class="nav-label text-[9px] mt-0.5 font-semibold text-slate-400">Buat Laporan</span>
+      </button>
+
+      <button onclick="switchTab('cek')" class="nav-item flex flex-col items-center text-slate-400 transition" data-target="cek">
+        <div class="nav-icon-wrapper w-8 h-8 rounded-full bg-transparent flex items-center justify-center transition">
+          <i class="fa-solid fa-file-circle-check text-sm"></i>
+        </div>
+        <span class="nav-label text-[9px] mt-0.5 font-semibold text-slate-400">Cek Laporan</span>
+      </button>
+
+      <button onclick="switchTab('edukasi')" class="nav-item flex flex-col items-center text-slate-400 transition" data-target="edukasi">
+        <div class="nav-icon-wrapper w-8 h-8 rounded-full bg-transparent flex items-center justify-center transition">
+          <i class="fa-solid fa-book-bookmark text-sm"></i>
+        </div>
+        <span class="nav-label text-[9px] mt-0.5 font-semibold text-slate-400">Edukasi</span>
+      </button>
+    </nav>
+
+    <!-- ================= MODALS & OVERLAYS ================= -->
+
+    <!-- Modal Kode Laporan Terkirim -->
+    <div id="modalFeedback" class="absolute inset-0 bg-black/60 z-50 flex items-center justify-center p-5 hidden">
+      <div class="bg-white w-full rounded-2xl p-5 shadow-2xl text-center space-y-3 border border-slate-100">
+        <div class="w-11 h-11 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-lg">
+          <i class="fa-solid fa-check"></i>
+        </div>
+        <h3 class="text-sm font-bold text-slate-800 pb-1 border-b">Laporan Berhasil Terkirim</h3>
+        <div>
+          <span class="text-[10px] text-slate-500 block mb-1">Kode Laporan Anda</span>
+          <div class="bg-slate-100 py-2 px-3 rounded-xl font-mono font-black text-sm tracking-widest text-slate-800 flex items-center justify-center space-x-2 border">
+            <span id="createdCode"></span>
+            <button onclick="salinKode()" title="Salin Kode" class="text-hearme hover:text-hearme-dark">
+              <i class="fa-regular fa-copy"></i>
+            </button>
+          </div>
+          <span class="text-[9px] text-emerald-600 block mt-1"><i class="fa-solid fa-check mr-1"></i>Tersimpan di Google Sheets</span>
+        </div>
+        <div>
+          <span class="text-[10px] text-slate-500 block text-center leading-relaxed">
+            Simpan kode di atas untuk memantau proses tindak lanjut di menu Cek Laporan.
+          </span>
+        </div>
+        <div class="flex space-x-2 pt-1">
+          <button onclick="tutupModalFeedback(true)" class="flex-1 bg-hearme hover:bg-hearme-dark text-white font-semibold py-2 rounded-xl text-xs transition">
+            Pantau Laporan
+          </button>
+          <button onclick="tutupModalFeedback(false)" class="flex-1 border border-slate-200 text-slate-600 font-semibold py-2 rounded-xl text-xs hover:bg-slate-50 transition">
+            Selesai
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Detail Laporan -->
+    <div id="modalDetail" class="absolute inset-0 bg-black/60 z-50 flex items-center justify-center p-4 hidden">
+      <div class="bg-white w-full max-h-[85%] rounded-2xl p-4 shadow-2xl flex flex-col space-y-3 border border-slate-100">
+        <div class="flex justify-between items-center border-b pb-2">
+          <h3 class="text-sm font-bold text-slate-800">Detail Laporan</h3>
+          <button onclick="tutupModalDetail()" class="text-slate-400 hover:text-slate-600 text-sm p-1">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div id="detailContent" class="overflow-y-auto space-y-2 text-xs text-slate-700 pr-1"></div>
+        <button onclick="tutupModalDetail()" class="w-full bg-hearme text-white font-semibold py-2 rounded-xl text-xs mt-1">
+          Tutup
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal Catatan Satgas -->
+    <div id="modalPesanAdmin" class="absolute inset-0 bg-black/60 z-50 flex items-center justify-center p-5 hidden">
+      <div class="bg-white w-full rounded-2xl p-4 shadow-2xl text-center space-y-3 border border-slate-100">
+        <div class="w-10 h-10 bg-indigo-100 text-hearme rounded-full flex items-center justify-center mx-auto text-base">
+          <i class="fa-solid fa-envelope-open-text"></i>
+        </div>
+        <h3 class="text-sm font-bold text-slate-800 pb-1 border-b">Catatan dari Satgas</h3>
+        <p id="pesanAdminTxt" class="text-xs text-slate-600 text-left bg-slate-50 p-3 rounded-xl border leading-relaxed"></p>
+        <button onclick="tutupPesanAdmin()" class="w-full bg-hearme text-white font-semibold py-2 rounded-xl text-xs mt-1">
+          Kembali
+        </button>
+      </div>
+    </div>
+
+    <!-- MODAL LOGIN ADMIN RAHASIA -->
+    <div id="modalLoginAdmin" class="absolute inset-0 bg-black/60 z-50 flex items-center justify-center p-5 hidden">
+      <div class="bg-white w-full max-w-[320px] rounded-2xl p-4 shadow-2xl space-y-3 border border-slate-100">
+        <div class="text-center space-y-1">
+          <div class="w-10 h-10 bg-indigo-50 text-hearme rounded-full flex items-center justify-center mx-auto text-base">
+            <i class="fa-solid fa-user-shield"></i>
+          </div>
+          <h3 class="text-sm font-bold text-slate-800">Akses Satgas / Admin</h3>
+          <p class="text-[10px] text-slate-500">Masukkan akun admin resmi HearMe</p>
+        </div>
+
+        <form onsubmit="prosesLoginAdmin(event)" class="space-y-2.5 text-xs">
+          <div>
+            <label class="block font-semibold mb-1 text-slate-600">Email Admin</label>
+            <input type="email" id="adminEmailInp" required placeholder="admin@domain.com" class="w-full border border-slate-200 rounded-lg p-2 text-xs outline-none focus:border-hearme">
+          </div>
+          <div>
+            <label class="block font-semibold mb-1 text-slate-600">Kata Sandi</label>
+            <input type="password" id="adminPassInp" required placeholder="••••••••" class="w-full border border-slate-200 rounded-lg p-2 text-xs outline-none focus:border-hearme">
+          </div>
+          <div class="flex space-x-2 pt-1">
+            <button type="button" onclick="tutupLoginAdmin()" class="flex-1 border border-slate-200 py-2 rounded-xl text-slate-600 font-semibold hover:bg-slate-50">
+              Batal
+            </button>
+            <button type="submit" id="btnLoginAdmin" class="flex-1 bg-hearme hover:bg-hearme-dark text-white font-semibold py-2 rounded-xl shadow">
+              Masuk
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- MODAL ADMIN UPDATE STATUS & CATATAN -->
+    <div id="modalAdminEdit" class="absolute inset-0 bg-black/60 z-50 flex items-center justify-center p-4 hidden">
+      <div class="bg-white w-full max-w-[340px] rounded-2xl p-4 shadow-2xl space-y-3 border border-slate-100 text-xs">
+        <div class="flex justify-between items-center border-b pb-2">
+          <h3 class="font-bold text-slate-800">Tindak Lanjut Laporan</h3>
+          <button onclick="tutupModalAdminEdit()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="space-y-0.5">
+          <div class="text-[10px] text-slate-400">Kode Laporan:</div>
+          <div id="editKodeLaporan" class="font-bold font-mono text-hearme text-sm"></div>
+        </div>
+        <form onsubmit="prosesUpdateLaporan(event)" class="space-y-2.5">
+          <div>
+            <label class="block font-semibold mb-1 text-slate-700">Status Laporan</label>
+            <select id="editStatusInp" class="w-full border rounded-lg p-2 bg-white outline-none focus:border-hearme">
+              <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
+              <option value="Sedang Diproses">Sedang Diproses</option>
+              <option value="Dalam Investigasi">Dalam Investigasi</option>
+              <option value="Selesai Ditindaklanjuti">Selesai Ditindaklanjuti</option>
+              <option value="Ditolak / Tidak Valid">Ditolak / Tidak Valid</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold mb-1 text-slate-700">Catatan Satgas (Dibaca Pelapor)</label>
+            <textarea id="editCatatanInp" rows="3" required class="w-full border rounded-lg p-2 text-xs outline-none focus:border-hearme" placeholder="Tulis catatan perkembangan kasus..."></textarea>
+          </div>
+          <button type="submit" id="btnSimpanUpdate" class="w-full bg-hearme text-white font-semibold py-2 rounded-xl shadow">
+            Simpan & Beritahu Pelapor
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toastNotification" class="absolute top-14 left-1/2 -translate-x-1/2 bg-slate-900/95 text-white text-[11px] px-4 py-2 rounded-full shadow-lg z-50 hidden transition-all duration-300 pointer-events-none">
+      <span id="toastMsg">Tersalin ke clipboard</span>
+    </div>
+
+  </div>
+
+  <!-- Logika aplikasi (memanggil Apps Script API) -->
+  <script src="app.js"></script>
+</body>
+</html>
