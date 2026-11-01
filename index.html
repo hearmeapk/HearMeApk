@@ -6,24 +6,28 @@
   <title>HearMe - Layanan Pengaduan & Edukasi</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            hearme: {
-              DEFAULT: '#4D62E5',
-              dark: '#3A4CC0',
-              light: '#6E81F7',
-              bg: '#F5F7FD',
-              surface: '#F8FAFC'
-            }
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Poppins', 'sans-serif']
+        },
+        colors: {
+          hearme: {
+            DEFAULT: '#4D62E5',
+            dark: '#3A4CC0',
+            light: '#6E81F7',
+            bg: '#F5F7FD',
+            surface: '#F8FAFC'
           }
         }
       }
     }
+  }
   </script>
   <style>
     *::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
@@ -68,6 +72,10 @@
         border: 0 !important;
         border-radius: 0 !important;
       }
+    }
+
+    body {
+    font-family: 'Poppins', sans-serif;
     }
 
     .safe-top { padding-top: max(env(safe-area-inset-top), 12px); }
