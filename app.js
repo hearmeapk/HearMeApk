@@ -182,14 +182,27 @@ async function submitLaporan(e) {
 
     const file = document.getElementById('inpFoto').files[0];
     if (file) {
+      // Validasi format foto
+      const formatDiizinkan = ['image/jpeg', 'image/png'];
+    
+      if (!formatDiizinkan.includes(file.type)) {
+        alert('Format foto harus JPG atau PNG.');
+        resetBtn();
+        return;
+      }
+    
+      // Validasi ukuran foto
       if (file.size > 5 * 1024 * 1024) {
         alert('Ukuran foto terlalu besar! Maksimal 5MB.');
         resetBtn();
         return;
       }
+    
       btn.innerText = 'Memproses foto...';
+    
       payload.fotoBase64 = await kompresFoto(file);
       payload.fotoNama = file.name.replace(/\.[^.]+$/, '') + '.jpg';
+    
       btn.innerText = 'Mengirim ke Database...';
     }
 
@@ -243,15 +256,6 @@ async function cariLaporan() {
     btn.disabled = false;
     btn.innerText = 'Cek Laporan';
   }
-}
-
-function tampilkanHasilTracking(data) {
-  currentTrackedReport = data;
-  document.getElementById('trackKode').innerText = data.kode;
-  document.getElementById('trackStatusBadge').innerText = data.status;
-  document.getElementById('trackWaktuMasuk').innerText = data.waktuMasuk;
-  document.getElementById('timelineStatusTxt').innerText = data.status;
-  document.getElementById('hasilTrackingCard').classList.remove('hidden');
 }
 
 function bukaModalDetail() {
