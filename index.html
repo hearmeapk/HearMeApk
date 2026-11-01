@@ -110,7 +110,7 @@
     </header>
 
     <!-- BACKDROP GELAP SAAT MENU DIBUKA -->
-    <div id="menuBackdrop" onclick="tutupSideMenu()" class="absolute inset-0 bg-black/50 backdrop-blur-[2px] z-45 hidden transition-opacity duration-300"></div>
+    <div id="menuBackdrop" onclick="tutupSideMenu()" class="absolute inset-0 bg-black/50 backdrop-blur-[2px] z-[45] hidden transition-opacity duration-300"></div>
 
     <!-- ================= MENU GARIS TIGA ================= -->
     <div id="sideMenu" class="absolute top-[58px] inset-x-0 bg-hearme text-white z-50 p-6 space-y-4 shadow-2xl hidden border-t border-white/20">
@@ -400,13 +400,19 @@
                 <div id="trackWaktuMasuk" class="text-[9px] text-slate-400"></div>
               </div>
               <div class="relative">
-                <div class="w-2.5 h-2.5 bg-hearme rounded-full absolute -left-[21px] top-1"></div>
+                <div id="timelineStatusDot"
+                     class="w-2.5 h-2.5 rounded-full absolute -left-[21px] top-1 bg-slate-400">
+                </div>
+              
                 <div class="flex justify-between items-start">
-                  <div>
-                    <div id="timelineStatusDot" class="w-2.5 h-2.5 rounded-full absolute -left-[21px] top-1"></div>
-                    <div class="text-[9px] text-slate-400">Status terkini</div>
+                  <div id="timelineStatusTxt" class="text-[9px] text-slate-400">
+                    Status terkini
                   </div>
-                  <button onclick="bukaPesanAdmin()" class="text-hearme font-bold text-[10px] underline">Lihat Catatan</button>
+              
+                  <button onclick="bukaPesanAdmin()"
+                    class="text-hearme font-bold text-[10px] underline">
+                    Lihat Catatan
+                  </button>
                 </div>
               </div>
             </div>
