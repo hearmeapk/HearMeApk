@@ -77,7 +77,6 @@
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen font-sans antialiased sm:flex sm:justify-center sm:items-center">
 
-  <!-- Mobile Wrapper Frame (Responsif Penuh di HP, Frame Elegan di Desktop/Tablet) -->
   <div class="
     w-full
     h-full
@@ -95,10 +94,8 @@
     sm:border-slate-800
   ">
 
-    <!-- ================= HEADER UTAMA ================= -->
     <header class="bg-hearme text-white px-5 py-3 safe-top flex justify-between items-center z-40 shrink-0 w-full">
       <div class="flex items-center space-x-2">
-        <!-- TEKS HEARME DENGAN TRIGGER RAHASIA 5 KALI KETUK -->
         <span id="secretAdminTrigger" onclick="handleSecretTap()" class="text-xl font-extrabold tracking-tight cursor-pointer select-none active:opacity-80 transition duration-150">
           HearMe
         </span>
@@ -109,10 +106,8 @@
       </button>
     </header>
 
-    <!-- BACKDROP GELAP SAAT MENU DIBUKA -->
     <div id="menuBackdrop" onclick="tutupSideMenu()" class="absolute inset-0 bg-black/50 backdrop-blur-[2px] z-[45] hidden transition-opacity duration-300"></div>
 
-    <!-- ================= MENU GARIS TIGA ================= -->
     <div id="sideMenu" class="absolute top-[58px] inset-x-0 bg-hearme text-white z-50 p-6 space-y-4 shadow-2xl hidden border-t border-white/20">
       <div class="flex flex-col space-y-3.5 text-xs font-semibold">
         <button onclick="bukaTentangCara('tentang')" class="text-left py-1 hover:text-slate-200 transition">
@@ -127,22 +122,17 @@
       </div>
     </div>
 
-    <!-- ================= CONTAINER KONTEN (TERKUNCI HORIZONTAL) ================= -->
     <main id="mainContainer" class="flex-1 overflow-y-auto overflow-x-hidden pb-24 relative bg-hearme w-full">
 
-      <!-- ================= 1. BERANDA ================= -->
       <section id="tab-beranda" class="w-full overflow-hidden">
 
-        <!-- LATAR BIRU ATAS -->
         <div class="bg-hearme relative px-4 pt-2 pb-14 w-full overflow-hidden">
           <div class="absolute -right-6 -top-6 w-28 h-28 rounded-full bg-white/10 pointer-events-none"></div>
           <div class="absolute -left-6 bottom-4 w-24 h-24 rounded-full bg-white/10 pointer-events-none"></div>
         </div>
 
-        <!-- AREA PUTIH MELENGKUNG -->
         <div class="bg-white rounded-t-[28px] px-4 pb-10 space-y-4 relative z-10 w-full min-h-screen">
 
-          <!-- KARTU INFORMASI MENGAMBANG -->
           <div class="relative -mt-10 z-20 bg-white rounded-2xl p-4 shadow-lg text-center space-y-2.5 border border-slate-100 w-full">
             <p class="text-[11px] text-slate-700 leading-relaxed font-medium">
               Aplikasi untuk menyampaikan laporan dan pengaduan secara aman serta menjaga kerahasiaan pelapor.
@@ -152,7 +142,6 @@
             </button>
           </div>
 
-          <!-- 2 TOMBOL QUICK AKSES -->
           <div class="grid grid-cols-2 gap-3 pt-1 w-full">
             <button onclick="switchTab('lapor')" class="bg-hearme hover:bg-hearme-dark text-white p-3.5 rounded-2xl shadow-md flex items-center space-x-3 text-left transition active:scale-95">
               <i class="fa-solid fa-file-circle-plus text-2xl"></i>
@@ -163,8 +152,6 @@
               <span class="text-xs font-bold leading-tight">Cek<br>Laporan</span>
             </button>
           </div>
-
-          <!-- CARD BOX INFORMASI LAYANAN -->
           <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 shadow-sm space-y-2 w-full">
             <div class="flex items-center space-x-2 text-hearme font-bold text-xs">
               <span>Pusat Layanan Terpadu & Kerahasiaan</span>
@@ -174,7 +161,6 @@
             </p>
           </div>
 
-          <!-- ARTIKEL DAN EDUKASI -->
           <div class="space-y-2 pt-1 w-full overflow-hidden">
             <div class="flex justify-between items-center px-1">
               <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wide">Artikel dan Edukasi</h3>
@@ -224,7 +210,6 @@
         </div>
       </section>
 
-      <!-- ================= 2. HALAMAN: CARA MELAPOR ================= -->
       <section id="page-cara-melapor" class="hidden min-h-screen bg-hearme text-white p-4 space-y-3 relative w-full overflow-hidden">
         <div class="relative flex items-center justify-center my-2">
           <div class="flex-grow border-t border-white/40"></div>
@@ -293,7 +278,6 @@
         </div>
       </section>
 
-      <!-- ================= 3. TAB: BUAT LAPORAN ================= -->
       <section id="tab-lapor" class="hidden p-4 space-y-4 bg-hearme-surface min-h-full w-full overflow-hidden">
         <div class="bg-white rounded-2xl p-3 shadow-sm border border-slate-100 space-y-3 w-full">
           <h2 class="text-sm font-bold text-center text-slate-800 pb-2 border-b border-slate-100">Formulir Laporan</h2>
@@ -339,7 +323,6 @@
               <textarea id="inpKronologi" required rows="3" placeholder="Jelaskan detail kronologi kejadian..." class="w-full border border-slate-200 rounded-lg p-2.5 text-xs outline-none focus:border-hearme"></textarea>
             </div>
 
-           <!-- INPUT FOTO BUKTI OPSIONAL -->
             <div class="bg-slate-50 p-2.5 rounded-xl border border-dashed border-slate-300">
               <label class="block font-semibold text-slate-700 mb-1">
                 <i class="fa-solid fa-camera text-hearme mr-1"></i>
@@ -374,7 +357,6 @@
         </div>
       </section>
 
-      <!-- ================= 4. TAB: CEK LAPORAN ================= -->
       <section id="tab-cek" class="hidden p-4 space-y-4 bg-hearme-surface min-h-full w-full overflow-hidden">
         <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 space-y-3 text-center w-full">
           <h2 class="text-sm font-bold text-slate-800 pb-2 border-b">Cek Status Laporan</h2>
@@ -434,7 +416,6 @@
         </div>
       </section>
 
-      <!-- ================= 5. TAB: EDUKASI ================= -->
       <section id="tab-edukasi" class="hidden p-4 space-y-4 bg-hearme-surface min-h-full w-full overflow-hidden">
         <h2 class="text-xs font-bold text-center text-slate-700 uppercase tracking-wider">Artikel dan Edukasi</h2>
 
@@ -457,7 +438,6 @@
         </div>
       </section>
 
-      <!-- ================= 6. HALAMAN: TENTANG APLIKASI ================= -->
       <section id="page-tentang-cara" class="hidden min-h-full bg-hearme text-white p-5 space-y-4 w-full overflow-hidden">
         <h2 class="text-sm font-bold text-center border-b border-white/20 pb-2">Tentang Aplikasi</h2>
         <p class="text-xs font-light leading-relaxed text-justify opacity-95">
@@ -469,7 +449,6 @@
         </button>
       </section>
 
-      <!-- ================= 7. HALAMAN: KRITIK DAN SARAN ================= -->
       <section id="page-kritik" class="hidden p-4 space-y-4 bg-hearme-surface min-h-full w-full overflow-hidden">
         <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 space-y-3 w-full">
           <h2 class="text-sm font-bold text-center text-slate-800 pb-2 border-b">Kritik dan Saran</h2>
@@ -488,8 +467,6 @@
           </form>
         </div>
       </section>
-
-      <!-- ================= 8. PANEL ADMIN ================= -->
       <section id="page-admin" class="hidden p-4 space-y-3.5 bg-slate-50 min-h-full w-full overflow-hidden">
         <div class="flex justify-between items-center bg-white p-3 rounded-2xl border shadow-sm">
           <div>
@@ -518,7 +495,6 @@
 
     </main>
 
-    <!-- ================= BOTTOM NAVIGATION BAR ================= -->
     <nav class="absolute bottom-0 inset-x-0 bg-white border-t border-slate-200 px-3 pt-2 pb-2 safe-bottom flex justify-around items-center z-30 bottom-bar-shadow">
       <button onclick="switchTab('beranda')" class="nav-item flex flex-col items-center transition" data-target="beranda">
         <div class="nav-icon-wrapper w-8 h-8 rounded-full bg-[#E5E9FF] text-hearme flex items-center justify-center transition">
@@ -549,9 +525,6 @@
       </button>
     </nav>
 
-    <!-- ================= MODALS & OVERLAYS ================= -->
-
-    <!-- Modal Kode Laporan Terkirim -->
     <div id="modalFeedback" class="absolute inset-0 bg-black/60 z-50 flex items-center justify-center p-5 hidden">
       <div class="bg-white w-full rounded-2xl p-5 shadow-2xl text-center space-y-3 border border-slate-100">
         <div class="w-11 h-11 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-lg">
@@ -584,7 +557,6 @@
       </div>
     </div>
 
-    <!-- Modal Detail Laporan -->
     <div id="modalDetail" class="absolute inset-0 bg-black/60 z-50 flex items-center justify-center p-4 hidden">
       <div class="bg-white w-full max-h-[85%] rounded-2xl p-4 shadow-2xl flex flex-col space-y-3 border border-slate-100">
         <div class="flex justify-between items-center border-b pb-2">
@@ -600,7 +572,6 @@
       </div>
     </div>
 
-    <!-- Modal Catatan Satgas -->
     <div id="modalPesanAdmin" class="absolute inset-0 bg-black/60 z-50 flex items-center justify-center p-5 hidden">
       <div class="bg-white w-full rounded-2xl p-4 shadow-2xl text-center space-y-3 border border-slate-100">
         <div class="w-10 h-10 bg-indigo-100 text-hearme rounded-full flex items-center justify-center mx-auto text-base">
@@ -614,7 +585,6 @@
       </div>
     </div>
 
-    <!-- MODAL LOGIN ADMIN RAHASIA -->
     <div id="modalLoginAdmin" class="absolute inset-0 bg-black/60 z-50 flex items-center justify-center p-5 hidden">
       <div class="bg-white w-full max-w-[320px] rounded-2xl p-4 shadow-2xl space-y-3 border border-slate-100">
         <div class="text-center space-y-1">
@@ -646,7 +616,6 @@
       </div>
     </div>
 
-    <!-- MODAL ADMIN UPDATE STATUS & CATATAN -->
     <div id="modalAdminEdit" class="absolute inset-0 bg-black/60 z-50 flex items-center justify-center p-4 hidden">
       <div class="bg-white w-full max-w-[340px] rounded-2xl p-4 shadow-2xl space-y-3 border border-slate-100 text-xs">
         <div class="flex justify-between items-center border-b pb-2">
@@ -679,14 +648,12 @@
       </div>
     </div>
 
-    <!-- Toast Notification -->
     <div id="toastNotification" class="absolute top-14 left-1/2 -translate-x-1/2 bg-slate-900/95 text-white text-[11px] px-4 py-2 rounded-full shadow-lg z-50 hidden transition-all duration-300 pointer-events-none">
       <span id="toastMsg">Tersalin ke clipboard</span>
     </div>
 
   </div>
 
-  <!-- Logika aplikasi (memanggil Apps Script API) -->
   <script src="app.js"></script>
 </body>
 </html>
