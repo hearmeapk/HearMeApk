@@ -108,7 +108,7 @@
     sm:border-slate-800
   ">
 
-    <header class="bg-hearme text-white px-5 py-3 safe-top flex justify-between items-center z-40 shrink-0 w-full">
+    <header class="bg-hearme text-white px-5 safe-top h-16 flex justify-between items-center z-40 shrink-0 w-full">
       <div class="flex items-center space-x-2">
         <span id="secretAdminTrigger" onclick="handleSecretTap()" class="text-xl font-extrabold tracking-tight cursor-pointer select-none active:opacity-80 transition duration-150">
           HearMe
@@ -120,9 +120,9 @@
       </button>
     </header>
 
-    <div id="menuBackdrop" onclick="tutupSideMenu()" class="absolute inset-x-0 bottom-0 top-[58px] bg-black/50 z-[45] hidden transition-opacity duration-300"></div>
-
-    <div id="sideMenu" class="absolute top-[58px] inset-x-0 bg-hearme text-white z-50 p-6 space-y-4 shadow-2xl hidden border-t border-white/20">
+    <div id="menuBackdrop" onclick="tutupSideMenu()" class="absolute inset-x-0 bottom-0 top-16 bg-black/50 z-[45] hidden transition-opacity duration-300"></div>
+    
+    <div id="sideMenu" class="absolute top-16 inset-x-0 bg-hearme text-white z-50 p-6 space-y-4 shadow-2xl hidden border-t border-white/20">
       <div class="flex flex-col space-y-3.5 text-xs font-semibold">
         <button onclick="bukaTentangCara('tentang')" class="text-left py-1 hover:text-slate-200 transition">
           Tentang HearMe
