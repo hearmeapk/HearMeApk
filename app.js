@@ -104,7 +104,7 @@ function switchTab(tabId) {
     const label = item.querySelector('.nav-label');
 
     if (target === tabId) {
-      iconWrapper.className = 'nav-icon-wrapper w-8 h-8 rounded-full bg-[#E5E9FF] text-hearme flex items-center justify-center transition';
+      iconWrapper.className = 'nav-icon-wrapper w-8 h-8 rounded-full bg-hearme-tint text-hearme flex items-center justify-center transition';
       label.className = 'nav-label text-[9px] mt-0.5 font-bold text-hearme';
     } else {
       iconWrapper.className = 'nav-icon-wrapper w-8 h-8 rounded-full bg-transparent flex items-center justify-center transition text-slate-400';
@@ -265,7 +265,7 @@ function bukaModalDetail() {
   let fotoHtml = '<div class="text-[10px] text-slate-400 italic">Tidak ada foto bukti dilampirkan</div>';
   if (isUrlAman(r.buktiFoto)) {
     fotoHtml = `
-      <a href="${escapeHtml(r.buktiFoto)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-1.5 text-hearme font-semibold text-[11px] underline">
+      <a href="${escapeHtml(r.buktiFoto)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-1.5 text-hearme-light font-semibold text-[11px] underline">
         <i class="fa-solid fa-arrow-up-right-from-square"></i>
         <span>Lihat Foto Bukti Asli</span>
       </a>`;
@@ -428,7 +428,7 @@ function renderDaftarLaporanAdmin(list) {
 
   container.innerHTML = list.map(r => {
     const fotoBtn = isUrlAman(r.buktiFoto)
-      ? `<a href="${escapeHtml(r.buktiFoto)}" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:underline font-semibold text-[10px] inline-flex items-center">
+      ? `<a href="${escapeHtml(r.buktiFoto)}" target="_blank" rel="noopener noreferrer" class="text-hearme-light hover:underline font-semibold text-[10px] inline-flex items-center">
            <i class="fa-solid fa-image mr-1"></i>Lihat Foto Bukti
          </a>`
       : '';
